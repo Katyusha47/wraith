@@ -24,7 +24,7 @@ A high-performance, secure Matrix client built with **Quasar (Vue 3)** and **Rus
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/wraith-matrix.git
+   git clone https://github.com/Katyusha47/wraith.git
    cd wraith-matrix
    ```
 
