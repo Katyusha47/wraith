@@ -12,14 +12,18 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
-$primary   : #1976D2;
-$secondary : #26A69A;
-$accent    : #9C27B0;
+// Cyberpunk / Stealth Theme
+$primary: #00e5ff; // Electric Cyan
+$secondary: #bd00ff; // Neon Purple
+$accent: #ff0055; // Cyber Pink
 
-$dark      : #1D1D1D;
-$dark-page : #121212;
+$dark: #0a0a0a; // Deep Black
+$dark-page: #050505; // Even Deeper Black
 
-$positive  : #21BA45;
-$negative  : #C10015;
-$info      : #31CCEC;
-$warning   : #F2C037;
+$positive: #00ff9d; // Green from Matrix
+$negative: #ff2a6d; // Glitch Red
+$info: #00e5ff; // Cyan
+$warning: #ffcc00; // Cyber Yellow
+
+// Custom Fonts (Optional - Quasar uses Roboto by default)
+// $typography-font-family : 'Orbitron', 'Roboto', sans-serif;
