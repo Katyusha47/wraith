@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header class="border-bottom-dark">
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
@@ -29,7 +29,25 @@
       <div class="row items-center q-pa-md border-bottom">
         <div class="text-h6">Rooms</div>
         <q-space />
-        <q-btn flat round dense icon="add" color="primary" @click="openCreateRoomDialog" />
+        <q-btn
+          flat
+          round
+          dense
+          icon="explore"
+          color="secondary"
+          @click="router.push('/discover')"
+          class="q-mr-sm"
+          title="Discover Public Rooms"
+        />
+        <q-btn
+          flat
+          round
+          dense
+          icon="add"
+          color="primary"
+          @click="openCreateRoomDialog"
+          title="Create Room"
+        />
       </div>
       <RoomList />
     </q-drawer>
@@ -104,5 +122,8 @@ onMounted(() => {
 <style scoped>
 .border-bottom {
   border-bottom: 1px solid #e0e0e0;
+}
+.border-bottom-dark {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* very subtle dark mode border instead of neon shadow */
 }
 </style>

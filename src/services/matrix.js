@@ -274,13 +274,63 @@ class MatrixService {
   }
 
   /**
+   * Resolves a Matrix content URI (mxc://) to an HTTP URL.
+   * @param {string} mxcUrl
+   * @param {number} width (optional)
+   * @param {number} height (optional)
+   * @param {string} resizeMethod (optional) 'crop' or 'scale'
+   * @returns {string | null}
+   */
+  resolveAvatarUrl(mxcUrl, width = 64, height = 64, resizeMethod = 'crop') {
+    if (!this.client || !mxcUrl) return null
+    // Fallback to non-thumbnail if width/height not provided, though we provide defaults anyway
+    return this.client.mxcUrlToHttp(mxcUrl, width, height, resizeMethod)
+  }
+
+  /**
+   * Searches the public room directory.
+   * @param {string} searchTerm
+   * @param {number} limit
+   * @returns {Promise<{rooms: Array, total: number}>}
+   */
+  async searchPublicRooms(searchTerm, limit = 20) {
+    if (!this.client) throw new Error('Client not initialized')
+
+    const response = await this.client.publicRooms({
+      limit: limit,
+      filter: {
+        generic_search_term: searchTerm || undefined,
+      },
+    })
+
+    const rooms = (response.chunk || []).map((room) => ({
+      roomId: room.room_id,
+      name: room.name,
+      topic: room.topic,
+      avatarUrl: this.resolveAvatarUrl(room.avatar_url, 128, 128), // Pre-resolve the HTTP url
+      memberCount: room.num_joined_members || 0,
+      canonicalAlias: room.canonical_alias,
+      worldReadable: room.world_readable,
+      guestCanJoin: room.guest_can_join,
+    }))
+
+    return {
+      rooms,
+      total: response.total_room_count_estimate || rooms.length,
+    }
+  }
+
+  /**
    * Joins a room by ID or Alias.
    * @param {string} roomIdOrAlias
-   * @returns {Promise<void>}
+   * @returns {Promise<string>} The joined room ID
    */
   async joinRoom(roomIdOrAlias) {
     if (!this.client) throw new Error('Client not initialized')
-    await this.client.joinRoom(roomIdOrAlias)
+    const room = await this.client.joinRoom(roomIdOrAlias)
+    // The SDK's joinRoom often returns { room_id: string } or the Room object depending on how it was joined/found.
+    // We normalize to returning the room ID string for router pushing.
+    return room.roomId || room.room_id || roomIdOrAlias
   }
 
   /**
