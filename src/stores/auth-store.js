@@ -45,8 +45,16 @@ export const useAuthStore = defineStore('auth', {
         // Start the Sync Loop
         await matrixService.start()
       } catch (err) {
-        console.error('Login failed', err)
-        this.error = err.message || 'Failed to login'
+        // Clean up Matrix SDK error messages
+        let niceError = 'Failed to login'
+
+        if (err.httpStatus === 403 || (err.message && err.message.includes('403'))) {
+          niceError = 'Invalid username or password.'
+        } else if (err.message) {
+          niceError = err.message
+        }
+
+        this.error = niceError
         this.isAuthenticated = false
       } finally {
         this.isLoading = false

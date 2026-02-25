@@ -83,6 +83,13 @@
 
                 <!-- Content -->
                 <div
+                  v-else-if="item.getContent().formatted_body"
+                  style="word-wrap: break-word; font-size: 0.95rem; line-height: 1.4"
+                  v-html="sanitizeMatrixHtml(item.getContent().formatted_body)"
+                  class="matrix-html-content"
+                ></div>
+
+                <div
                   v-else
                   style="
                     word-wrap: break-word;
@@ -157,6 +164,7 @@ import { date } from 'quasar'
 import { matrixService } from 'src/services/matrix'
 import { useRoomTimeline } from 'src/composables/useRoomTimeline'
 import { useSettingsStore } from 'src/stores/settings-store'
+import { sanitizeMatrixHtml } from 'src/utils/sanitize'
 
 const props = defineProps({
   roomId: {
@@ -284,5 +292,36 @@ const sendMessage = async () => {
 <style scoped>
 .tracking-wide {
   letter-spacing: 0.5px;
+}
+
+/* Base styles for incoming safe HTML */
+:deep(.matrix-html-content p) {
+  margin-bottom: 0.5em;
+}
+:deep(.matrix-html-content p:last-child) {
+  margin-bottom: 0;
+}
+:deep(.matrix-html-content blockquote) {
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
+  padding-left: 8px;
+  margin: 4px 0;
+  color: inherit;
+  opacity: 0.8;
+}
+:deep(.matrix-html-content code) {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+:deep(.matrix-html-content pre) {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+:deep(.matrix-html-content a) {
+  color: var(--q-primary);
+  text-decoration: underline;
 }
 </style>
