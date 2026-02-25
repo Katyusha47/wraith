@@ -17,6 +17,7 @@
   "dependencies": {
     "@matrix-org/olm": "^3.2.15",
     "@quasar/extras": "^1.16.4",
+    "@vercel/analytics": "^1.6.1",
     "@vueuse/core": "^14.2.1",
     "axios": "^1.2.1",
     "buffer": "^6.0.3",
