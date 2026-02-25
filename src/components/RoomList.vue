@@ -57,6 +57,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useRoomStore } from 'src/stores/room-store'
 import { date } from 'quasar'
 
@@ -72,10 +73,16 @@ const sortedRooms = computed(() => {
   return rooms
 })
 
+const router = useRouter()
+const route = useRoute()
+
 const activeRoomId = computed(() => roomStore.activeRoomId)
 
 const selectRoom = (roomId) => {
   roomStore.selectRoom(roomId)
+  if (route.path !== '/') {
+    router.push('/')
+  }
 }
 
 const getInitials = (name) => {
